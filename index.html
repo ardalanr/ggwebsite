@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoldenGait — DARPA Challenge Winner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:       #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dim:   rgba(201, 168, 76, 0.15);
+      --dark:       #0b0b0b;
+      --dark2:      #111111;
+      --mid:        #1e1e1e;
+      --white:      #ffffff;
+      --off-white:  #f8f6f2;
+      --gray:       #6b6b6b;
+      --border:     #e4e0d8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ─── TOP LINKS BAR ─────────────────────────────────────── */
+    .links-bar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 400;
+      display: flex;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.95);
+      border: none;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .link-btn:hover {
+      background: var(--gold);
+      color: #fff;
+    }
+
+    .link-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ─── BANNER ─────────────────────────────────────────────── */
+    .banner {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 640px;
+      overflow: hidden;
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .banner-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.38;
+    }
+
+    /* fallback gradient when no video */
+    .banner-video-fallback {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 50%, #1a130a 0%, #0b0b0b 70%);
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 24px;
+      max-width: 1000px;
+    }
+
+    .banner-tag {
+      position: relative;
+      z-index: 10;
+      white-space: nowrap;
+      display: inline-block;
+      font-size: clamp(13px, 1.5vw, 17px);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      padding: 10px 24px;
+      border: 1.5px solid rgba(201,168,76,0.45);
+      border-radius: 100px;
+      background: rgba(201,168,76,0.1);
+    }
+
+    .banner-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(80px, 13vw, 160px);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 0.9;
+      letter-spacing: -4px;
+      margin-bottom: 28px;
+    }
+
+    .banner-subtitle {
+      font-size: clamp(15px, 1.8vw, 19px);
+      color: rgba(255, 255, 255, 0.65);
+      max-width: 560px;
+      margin: 0 auto 56px;
+      line-height: 1.65;
+      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .banner-award {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      background: rgba(201, 168, 76, 0.18);
+      border: 1px solid rgba(201, 168, 76, 0.55);
+      border-radius: 100px;
+      color: var(--gold-light);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── STICKY NAV ─────────────────────────────────────────── */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 300;
+      display: flex;
+      justify-content: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0);
+      backdrop-filter: blur(12px);
+    }
+
+    .sticky-nav a,
+    .sticky-nav-item > span {
+      padding: 15px 28px;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: block;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .sticky-nav > a:last-child,
+    .sticky-nav-item:last-child { border-right: none; }
+
+    .sticky-nav a:hover,
+    .sticky-nav-item > span:hover { color: var(--gold-light); }
+
+    /* Architecture dropdown */
+    .sticky-nav-item {
+      position: relative;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sticky-nav-item > span::after {
+      content: ' ▾';
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+    .sticky-nav-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      background: rgba(11,11,11,0.97);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 2px solid var(--gold);
+      border-radius: 0 0 10px 10px;
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+
+    .sticky-nav-item:hover .sticky-nav-dropdown { display: block; }
+
+    .sticky-nav-dropdown a {
+      display: block;
+      padding: 12px 20px;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      line-height: 1.4;
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .sticky-nav-dropdown a:last-child { border-bottom: none; }
+    .sticky-nav-dropdown a:hover { background: rgba(201,168,76,0.1); color: var(--gold-light); }
+
+    /* feature tag as a button link */
+    a.feature-tag {
+      display: inline-block;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    a.feature-tag:hover {
+      background: rgba(201,168,76,0.28);
+      border-color: rgba(201,168,76,0.7);
+    }
+
+    /* ─── DESCRIPTION ───────────────────────────────────────── */
+    .description-section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 110px 40px;
+      text-align: center;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+
+    .description-section p {
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.75;
+      color: #444;
+      font-weight: 400;
+    }
+
+    /* ─── DEMOS ──────────────────────────────────────────────── */
+    .demos-section {
+      background: var(--dark);
+      padding: 100px 40px;
+    }
+
+    .demos-section .section-label { color: var(--gold); }
+    .demos-section .section-title { color: #fff; margin-bottom: 12px; }
+
+    .demos-section .section-desc {
+      color: rgba(255,255,255,0.55);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    .demos-header {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .demos-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .demo-cell {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--mid);
+      aspect-ratio: 16 / 9;
+      cursor: pointer;
+    }
+
+    .demo-cell video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .demo-cell:hover video { transform: scale(1.03); }
+
+    /* placeholder if no video */
+    .demo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1c1510 0%, #2a1f10 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .demo-placeholder-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid rgba(201,168,76,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(201,168,76,0.5);
+    }
+
+    .demo-placeholder-icon svg { width: 22px; height: 22px; }
+
+    .demo-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 36px 20px 18px;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .demo-label span {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.55);
+      margin-top: 3px;
+    }
+
+    /* ─── ARCHITECTURE ───────────────────────────────────────── */
+    .architecture-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 110px 40px;
+    }
+
+    .arch-diagram {
+      margin-top: 56px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      min-height: 460px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arch-diagram img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .arch-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 80px 40px;
+      color: #aaa;
+      text-align: center;
+    }
+
+    .arch-placeholder-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      background: #ede9e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arch-placeholder-icon svg { width: 36px; height: 36px; color: var(--gold); }
+    .arch-placeholder p { font-size: 14px; max-width: 300px; line-height: 1.6; }
+
+    /* architecture pipeline nodes */
+    .arch-pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 60px 40px;
+      flex-wrap: wrap;
+      row-gap: 24px;
+    }
+
+    .arch-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-width: 130px;
+    }
+
+    .arch-node-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .arch-node-icon svg { width: 28px; height: 28px; color: var(--gold); }
+
+    .arch-node-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      color: #333;
+    }
+
+    .arch-node-sub {
+      font-size: 10px;
+      color: #999;
+      text-align: center;
+      max-width: 110px;
+    }
+
+    .arch-arrow {
+      color: #ccc;
+      font-size: 22px;
+      padding: 0 8px;
+      margin-top: -24px;
+    }
+
+    /* ─── FEATURES ───────────────────────────────────────────── */
+    .features-section { padding: 0; }
+
+    .feature-block {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .feature-block video,
+    .feature-block-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .feature-block-bg {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1209 100%);
+    }
+
+    .feature-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, rgba(0,0,0,0.88) 38%, rgba(0,0,0,0.15) 100%);
+    }
+
+    .feature-block.right .feature-overlay {
+      background: linear-gradient(260deg, rgba(0,0,0,0.88) 38%, rgba(0,0,0,0.15) 100%);
+    }
+
+    .feature-content {
+      position: relative;
+      z-index: 10;
+      max-width: 500px;
+      padding: 80px 80px;
+      color: #fff;
+    }
+
+    .feature-block.right .feature-content { margin-left: auto; }
+
+    .feature-content .section-label { color: var(--gold-light); margin-bottom: 14px; }
+
+    .feature-content .section-title {
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: clamp(26px, 3vw, 40px);
+    }
+
+    .feature-content p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .feature-tag {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 6px 14px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 100px;
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ─── TEAM ───────────────────────────────────────────────── */
+    .team-section {
+      background: var(--off-white);
+      padding: 110px 40px;
+      text-align: center;
+    }
+
+    .team-section .section-title { margin-bottom: 16px; }
+
+    .team-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 28px;
+    }
+
+    .team-logos img {
+      height: 64px;
+      width: auto;
+      opacity: 0.85;
+    }
+
+    .team-affil-note {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 64px;
+    }
+
+    .team-lead-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 44px;
+    }
+
+    .team-lead-row .team-photo {
+      width: 130px;
+      height: 130px;
+    }
+
+    .team-lead-row .team-photo-placeholder {
+      font-size: 36px;
+    }
+
+    .team-grid {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 44px 20px;
+    }
+
+    .team-member {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .team-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    }
+
+    .team-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .team-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--gold) 0%, #8a6020 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.9);
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .team-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+      line-height: 1.3;
+    }
+
+    .team-name a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .team-name a:hover { text-decoration: underline; }
+
+    .team-role {
+      font-size: 11.5px;
+      color: var(--gray);
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .team-sup {
+      font-size: 10px;
+      color: var(--gold);
+      vertical-align: super;
+    }
+
+    /* ─── Q & A ──────────────────────────────────────────────── */
+    .qa-section {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 110px 40px;
+    }
+
+    .qa-section .section-title { margin-bottom: 56px; }
+
+    .qa-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .qa-item:first-of-type { border-top: 1px solid var(--border); }
+
+    .qa-question {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 26px 0;
+      user-select: none;
+    }
+
+    .qa-toggle {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1;
+      transition: background 0.2s;
+    }
+
+    .qa-item.open .qa-toggle {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+
+    .qa-answer {
+      display: none;
+      padding-bottom: 26px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #555;
+    }
+
+    .qa-item.open .qa-answer { display: block; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      padding: 44px 40px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    footer strong { color: var(--gold); font-weight: 600; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .demos-grid { grid-template-columns: 1fr; }
+      .feature-content { padding: 60px 40px; max-width: 100%; }
+      .banner-nav a { padding: 14px 16px; font-size: 11px; }
+      .arch-pipeline { flex-direction: column; }
+      .arch-arrow { transform: rotate(90deg); margin: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .link-btn { padding: 12px 14px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── TOP LINKS BAR ──────────────────────────────────────── -->
+  <div class="links-bar">
+    <a href="#" class="link-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/>
+      </svg>
+      YouTube
+    </a>
+    <a href="#" class="link-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 5.1 18 5.4 18 5.4c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/>
+      </svg>
+      GitHub
+    </a>
+  </div>
+
+  <!-- ─── BANNER ─────────────────────────────────────────────── -->
+  <div class="banner" id="top">
+    <!-- Replace src with your actual banner video -->
+    <video class="banner-video" autoplay muted loop playsinline poster="">
+      <!-- <source src="videos/banner.mp4" type="video/mp4" /> -->
+    </video>
+    <div class="banner-video-fallback"></div>
+    <div class="banner-overlay"></div>
+
+    <div style="flex: 2;"></div>
+    <div class="banner-tag">Full-Stack Embodied AI &nbsp;·&nbsp; DARPA TIAMAT Challenge Winning Method</div>
+    <div style="flex: 1;"></div>
+    <div class="banner-content">
+      <h1 class="banner-title">GoldenGait</h1>
+      <p class="banner-subtitle">
+        Making Autonomous Navigation Intelligent<br/>with Natural Language and Scene Understanding
+      </p>
+    </div>
+    <div style="flex: 2;"></div>
+  </div>
+
+  <!-- ─── STICKY NAV ────────────────────────────────────────── -->
+  <nav class="sticky-nav">
+    <a href="#description">Description</a>
+    <a href="#demos">Demos</a>
+    <div class="sticky-nav-item">
+      <span onclick="location.href='#architecture'" style="cursor:pointer;">Architecture</span>
+      <div class="sticky-nav-dropdown">
+        <a href="lam.html">LAM</a>
+        <a href="scene-graph.html">Scene Graph</a>
+        <a href="exploration.html">Exploration</a>
+        <a href="navigation.html">Navigation</a>
+        <a href="locomotion.html">Locomotion</a>
+      </div>
+    </div>
+    <a href="#features">Features</a>
+    <a href="#team">Team</a>
+    <a href="#qa">Q &amp; A</a>
+  </nav>
+
+  <!-- ─── DESCRIPTION ────────────────────────────────────────── -->
+  <section class="description-section" id="description">
+    <div class="section-label">About the Project</div>
+    <h2 class="section-title">Full-Stack Embodied AI</h2>
+    <p>
+      A full-stack embodied AI system enabling a quadruped robot to interpret natural language tasks
+      autonomously, explore an environment, and retrieve target objects — bridging the gap between
+      high-level human intent and real-world robotic execution.
+    </p>
+  </section>
+
+  <!-- ─── DEMOS ──────────────────────────────────────────────── -->
+  <section class="demos-section" id="demos">
+    <div class="demos-grid">
+      <!-- Demo 1 -->
+      <div class="demo-cell">
+        <!-- <video autoplay muted loop playsinline><source src="videos/demo1.mp4" type="video/mp4"/></video> -->
+        <div class="demo-placeholder">
+          <div class="demo-placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="demo-label">
+          Scene Graph
+          <span>Real-time semantic 3D understanding of the environment</span>
+        </div>
+      </div>
+
+      <!-- Demo 2 -->
+      <div class="demo-cell">
+        <!-- <video autoplay muted loop playsinline><source src="videos/demo2.mp4" type="video/mp4"/></video> -->
+        <div class="demo-placeholder">
+          <div class="demo-placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="demo-label">
+          Autonomous Exploration
+          <span>Frontier-based mapping of unknown environments</span>
+        </div>
+      </div>
+
+      <!-- Demo 3 -->
+      <div class="demo-cell">
+        <!-- <video autoplay muted loop playsinline><source src="videos/demo3.mp4" type="video/mp4"/></video> -->
+        <div class="demo-placeholder">
+          <div class="demo-placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="demo-label">
+          Object Retrieval
+          <span>Natural language–guided fetch across multi-room environments</span>
+        </div>
+      </div>
+
+      <!-- Demo 4 -->
+      <div class="demo-cell">
+        <!-- <video autoplay muted loop playsinline><source src="videos/demo4.mp4" type="video/mp4"/></video> -->
+        <div class="demo-placeholder">
+          <div class="demo-placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="demo-label">
+          Robust Locomotion
+          <span>Agile whole-body control across stairs, slopes, and uneven terrain</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ARCHITECTURE ───────────────────────────────────────── -->
+  <section id="architecture">
+    <div class="architecture-section">
+      <div class="section-label">System Design</div>
+      <h2 class="section-title">Architecture</h2>
+      <p style="color:#555; font-size:15px; line-height:1.75; max-width:700px;">
+        GoldenGait integrates a vision-language model frontend with a hierarchical motion planning
+        backend, enabling seamless closed-loop reasoning from raw sensor input to low-level joint
+        control.
+      </p>
+
+      <div class="arch-diagram">
+        <!-- Replace with <img src="images/architecture.png" alt="Architecture Diagram" /> -->
+        <div class="arch-pipeline">
+          <div class="arch-node">
+            <div class="arch-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2a7 7 0 1 1 0 14A7 7 0 0 1 12 2z"/>
+                <path d="M12 16v6M8 20h8"/>
+              </svg>
+            </div>
+            <div class="arch-node-label">Natural Language<br/>Input</div>
+            <div class="arch-node-sub">Task description from operator</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">
+            <div class="arch-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+            </div>
+            <div class="arch-node-label">VLM Planner</div>
+            <div class="arch-node-sub">Vision-language scene understanding</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">
+            <div class="arch-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/>
+              </svg>
+            </div>
+            <div class="arch-node-label">Semantic Map</div>
+            <div class="arch-node-sub">3D environment representation</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">
+            <div class="arch-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+              </svg>
+            </div>
+            <div class="arch-node-label">Motion Planner</div>
+            <div class="arch-node-sub">High-level path planning</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">
+            <div class="arch-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+                <path d="M8 12h8M12 8l4 4-4 4"/>
+              </svg>
+            </div>
+            <div class="arch-node-label">Whole-Body<br/>Controller</div>
+            <div class="arch-node-sub">RL-trained locomotion policy</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">
+            <div class="arch-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+                <polyline points="7 9 12 4 17 9"/>
+                <line x1="12" y1="4" x2="12" y2="16"/>
+              </svg>
+            </div>
+            <div class="arch-node-label">Robot Execution</div>
+            <div class="arch-node-sub">Real-world task completion</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURES ───────────────────────────────────────────── -->
+  <section class="features-section" id="features">
+
+    <!-- Feature 1 -->
+    <div class="feature-block">
+      <!-- <video autoplay muted loop playsinline><source src="videos/feature1.mp4" type="video/mp4"/></video> -->
+      <div class="feature-block-bg" style="background: linear-gradient(135deg, #0a0a0a 0%, #12100a 100%);"></div>
+      <div class="feature-overlay"></div>
+      <div class="feature-content">
+        <div class="section-label">Natural Language Understanding</div>
+        <h2 class="section-title">Talk to Your Robot</h2>
+        <p>
+          GoldenGait accepts free-form natural language instructions from operators. A large
+          vision-language model interprets intent, disambiguates objects, and generates
+          structured task plans — no programming required.
+        </p>
+        <div class="feature-tag">Zero-shot generalization</div>
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="feature-block right">
+      <!-- <video autoplay muted loop playsinline><source src="videos/feature2.mp4" type="video/mp4"/></video> -->
+      <div class="feature-block-bg" style="background: linear-gradient(225deg, #0a0a0a 0%, #0a0c10 100%);"></div>
+      <div class="feature-overlay"></div>
+      <div class="feature-content">
+        <div class="section-label">Autonomous Exploration</div>
+        <h2 class="section-title">Explore Without a Map</h2>
+        <p>
+          Using frontier-based exploration and real-time 3D semantic mapping, the robot
+          builds an understanding of its environment on-the-fly — no pre-built maps or
+          environment-specific tuning needed.
+        </p>
+        <a href="locomotion.html" class="feature-tag">Sim-to-real transfer →</a>
+      </div>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="feature-block">
+      <!-- <video autoplay muted loop playsinline><source src="videos/feature3.mp4" type="video/mp4"/></video> -->
+      <div class="feature-block-bg" style="background: linear-gradient(135deg, #0a0a0a 0%, #0d0a12 100%);"></div>
+      <div class="feature-overlay"></div>
+      <div class="feature-content">
+        <div class="section-label">Whole-Body Control</div>
+        <h2 class="section-title">Agile. Stable. Precise.</h2>
+        <p>
+          A massively parallelized reinforcement learning pipeline trains the locomotion
+          controller entirely in simulation. The result is a policy that transfers
+          directly to the real robot with robust stability across terrain types.
+        </p>
+        <div class="feature-tag">Trained in simulation · deployed in reality</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─── TEAM ────────────────────────────────────────────────── -->
+  <section class="team-section" id="team">
+    <h2 class="section-title">Our Team</h2>
+    <div class="team-logos">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Seal_of_University_of_California%2C_Berkeley.svg/240px-Seal_of_University_of_California%2C_Berkeley.svg.png" alt="UC Berkeley" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/240px-Stanford_Cardinal_logo.svg.png" alt="Stanford University" />
+    </div>
+    <p class="team-affil-note">
+      <sup class="team-sup">1</sup>UC Berkeley &nbsp;
+      <sup class="team-sup">2</sup>Stanford University &nbsp;
+    </p>
+
+    <div class="team-grid">
+
+      <div class="team-member">
+        <div class="team-photo">
+          <!-- <img src="images/team/member1.jpg" alt="..." /> -->
+          <div class="team-photo-placeholder">R</div>
+        </div>
+        <div class="team-name"><a href="#">Ryan Ardalan<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">Integration &amp; Testing Lead</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">F</div>
+        </div>
+        <div class="team-name"><a href="#">Fabio Huebel<sup class="team-sup">2</sup></a></div>
+        <div class="team-role">LAM Lead</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">S</div>
+        </div>
+        <div class="team-name"><a href="#">Siming He<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">Scene Graph Lead</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">Y</div>
+        </div>
+        <div class="team-name"><a href="#">Yarden Goraly<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">Locomotion Lead</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">R</div>
+        </div>
+        <div class="team-name"><a href="#">Rohan Garg<sup class="team-sup">2</sup></a></div>
+        <div class="team-role">Exploration</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">Y</div>
+        </div>
+        <div class="team-name"><a href="#">Yash Rampuria<sup class="team-sup">2</sup></a></div>
+        <div class="team-role">Exploration</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">A</div>
+        </div>
+        <div class="team-name"><a href="#">Adam Lilja<sup class="team-sup">2</sup></a></div>
+        <div class="team-role">Scene Graph</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">L</div>
+        </div>
+        <div class="team-name"><a href="#">Leo Huang<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">Scene Graph</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">C</div>
+        </div>
+        <div class="team-name"><a href="#">Chenhao Zhu<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">Integration &amp; Testing</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">Y</div>
+        </div>
+        <div class="team-name"><a href="#">Yousef Liang<sup class="team-sup">2</sup></a></div>
+        <div class="team-role">Locomotion</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">D</div>
+        </div>
+        <div class="team-name"><a href="#">Denae Cantrell<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">Exploration</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">J</div>
+        </div>
+        <div class="team-name"><a href="https://jonasfrey96.github.io" target="_blank" rel="noopener">Jonas Frey<sup class="team-sup">1,2</sup></a></div>
+        <div class="team-role">Project Lead<br/>UC Berkeley & Stanford</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Q & A ─────────────────────────────────────────────── -->
+  <section class="qa-section" id="qa">
+    <div class="section-label">Frequently Asked Questions</div>
+    <h2 class="section-title">Q &amp; A</h2>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        What hardware does GoldenGait run on?
+        <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-answer">
+        GoldenGait runs on a quadruped robot platform equipped with an onboard GPU compute unit,
+        stereo RGB-D cameras, and a LiDAR sensor. The locomotion policy runs at 50 Hz on the
+        onboard computer, while the VLM planner operates asynchronously on a coprocessor.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        How does the system handle novel objects it has never seen before?
+        <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-answer">
+        The VLM backbone provides strong zero-shot generalization. By leveraging a large pre-trained
+        vision-language model, GoldenGait can identify and reason about objects it was never
+        explicitly trained on — using open-vocabulary detection and contextual reasoning.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        How long does the robot take to complete a typical fetch task?
+        <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-answer">
+        Task completion time varies with environment size and object location. In our DARPA
+        challenge runs, average task completion time was under 3 minutes for single-room
+        retrieval and under 7 minutes for multi-room search-and-fetch scenarios.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        Is the code open source?
+        <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-answer">
+        Yes! We are releasing the full codebase, pre-trained model weights, and simulation
+        environments on GitHub. Please see the GitHub link at the top of this page. We hope
+        this accelerates research in embodied AI and legged robotics.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        What is the sim-to-real gap like for the locomotion controller?
+        <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-answer">
+        We use domain randomization extensively during training — varying terrain friction,
+        motor dynamics, payload, and sensor noise. The trained policy transfers directly to
+        the physical robot with no fine-tuning required. We observed less than 8% performance
+        degradation from simulation to real-world benchmarks.
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        Can GoldenGait operate fully autonomously, without a human in the loop?
+        <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-answer">
+        Yes — once given an initial task in natural language, GoldenGait operates fully
+        autonomously. It handles exploration, object localization, navigation, and manipulation
+        end-to-end. A human operator is only required for the initial task specification.
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────── -->
+  <footer>
+    <strong>GoldenGait</strong> — DARPA TIAMAT Robotics Challenge Winning Method &nbsp;·&nbsp; 2026<br/>
+    <span style="margin-top: 8px; display: block;">
+      UC Berkeley &nbsp;·&nbsp; Stanford University
+    </span>
+  </footer>
+
+  <!-- ─── Q&A TOGGLE SCRIPT ──────────────────────────────────── -->
+  <script>
+    function toggleQA(el) {
+      const item = el.closest('.qa-item');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.qa-item.open').forEach(i => i.classList.remove('open'));
+      // Open clicked (if it wasn't already open)
+      if (!isOpen) item.classList.add('open');
+    }
+  </script>
+
+</body>
+</html>
