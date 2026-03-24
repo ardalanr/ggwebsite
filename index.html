@@ -597,6 +597,14 @@
       font-size: 36px;
     }
 
+    .team-pi-row {
+      display: flex;
+      justify-content: center;
+      gap: 170px;
+      margin-top: 56px;
+      flex-wrap: wrap;
+    }
+
     .team-grid {
       max-width: 1080px;
       margin: 0 auto;
@@ -702,27 +710,34 @@
       align-items: center;
       justify-content: center;
       color: var(--gold);
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 300;
       line-height: 1;
-      transition: background 0.2s;
+      transition: background 0.25s, border-color 0.25s, transform 0.3s ease;
+      transform: rotate(0deg);
     }
 
     .qa-item.open .qa-toggle {
       background: var(--gold);
       color: #fff;
       border-color: var(--gold);
+      transform: rotate(-90deg);
     }
 
     .qa-answer {
-      display: none;
-      padding-bottom: 26px;
+      overflow: hidden;
+      max-height: 0;
+      padding-bottom: 0;
       font-size: 15px;
       line-height: 1.75;
       color: #555;
+      transition: max-height 0.35s ease, padding-bottom 0.35s ease;
     }
 
-    .qa-item.open .qa-answer { display: block; }
+    .qa-item.open .qa-answer {
+      max-height: 300px;
+      padding-bottom: 26px;
+    }
 
     /* ─── FOOTER ─────────────────────────────────────────────── */
     footer {
@@ -738,7 +753,7 @@
 
     /* ─── RESPONSIVE ─────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .team-grid, .team-pi-row { grid-template-columns: repeat(2, 1fr); }
       .demos-grid { grid-template-columns: 1fr; }
       .feature-content { padding: 60px 40px; max-width: 100%; }
       .banner-nav a { padding: 14px 16px; font-size: 11px; }
@@ -762,7 +777,7 @@
       </svg>
       YouTube
     </a>
-    <a href="#" class="link-btn">
+    <a href="https://github.com/JonasFrey96/tiamat" class="link-btn">
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 5.1 18 5.4 18 5.4c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/>
       </svg>
@@ -774,7 +789,7 @@
   <div class="banner" id="top">
     <!-- Replace src with your actual banner video -->
     <video class="banner-video" autoplay muted loop playsinline poster="">
-      <!-- <source src="videos/banner.mp4" type="video/mp4" /> -->
+      <source src="videos/GGTask_Final.mp4" type="video/mp4" />
     </video>
     <div class="banner-video-fallback"></div>
     <div class="banner-overlay"></div>
@@ -826,7 +841,7 @@
     <div class="demos-grid">
       <!-- Demo 1 -->
       <div class="demo-cell">
-        <!-- <video autoplay muted loop playsinline><source src="videos/demo1.mp4" type="video/mp4"/></video> -->
+        <video autoplay muted loop playsinline><source src="videos/GGSG.mp4" type="video/mp4"/></video>
         <div class="demo-placeholder">
           <div class="demo-placeholder-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -854,7 +869,7 @@
 
       <!-- Demo 3 -->
       <div class="demo-cell">
-        <!-- <video autoplay muted loop playsinline><source src="videos/demo3.mp4" type="video/mp4"/></video> -->
+        <video autoplay muted loop playsinline><source src="videos/GGTask_Final.mp4" type="video/mp4"/></video>
         <div class="demo-placeholder">
           <div class="demo-placeholder-icon">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -889,7 +904,7 @@
       <h2 class="section-title">Architecture</h2>
       <p style="color:#555; font-size:15px; line-height:1.75; max-width:700px;">
         GoldenGait integrates a vision-language model frontend with a hierarchical motion planning
-        backend, enabling seamless closed-loop reasoning from raw sensor input to low-level joint
+        backend, enabling seamless closed-loop reasoning from task description and raw sensor input to low-level joint
         control.
       </p>
 
@@ -906,7 +921,7 @@
             <div class="arch-node-label">Natural Language<br/>Input</div>
             <div class="arch-node-sub">Task description from operator</div>
           </div>
-          <div class="arch-arrow">→</div>
+            <div class="arch-arrow">→</div>
           <div class="arch-node">
             <div class="arch-node-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -914,8 +929,8 @@
                 <path d="M8 21h8M12 17v4"/>
               </svg>
             </div>
-            <div class="arch-node-label">VLM Planner</div>
-            <div class="arch-node-sub">Vision-language scene understanding</div>
+            <div class="arch-node-label">Large Autonomy Model</div>
+            <div class="arch-node-sub">Vision-language understanding</div>
           </div>
           <div class="arch-arrow">→</div>
           <div class="arch-node">
@@ -924,8 +939,8 @@
                 <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/>
               </svg>
             </div>
-            <div class="arch-node-label">Semantic Map</div>
-            <div class="arch-node-sub">3D environment representation</div>
+            <div class="arch-node-label">Scene Graph</div>
+            <div class="arch-node-sub">3D scene representation</div>
           </div>
           <div class="arch-arrow">→</div>
           <div class="arch-node">
@@ -946,7 +961,7 @@
                 <path d="M8 12h8M12 8l4 4-4 4"/>
               </svg>
             </div>
-            <div class="arch-node-label">Whole-Body<br/>Controller</div>
+            <div class="arch-node-label">Locomotion<br/>Controller</div>
             <div class="arch-node-sub">RL-trained locomotion policy</div>
           </div>
           <div class="arch-arrow">→</div>
@@ -1026,8 +1041,8 @@
   <section class="team-section" id="team">
     <h2 class="section-title">Our Team</h2>
     <div class="team-logos">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Seal_of_University_of_California%2C_Berkeley.svg/240px-Seal_of_University_of_California%2C_Berkeley.svg.png" alt="UC Berkeley" />
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/240px-Stanford_Cardinal_logo.svg.png" alt="Stanford University" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Seal_of_University_of_California%2C_Berkeley.svg/1280px-Seal_of_University_of_California%2C_Berkeley.svg.png" alt="UC Berkeley" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Seal_of_Stanford_University_%281920–2002%29.png?_=20231205232744" alt="Stanford University" />
     </div>
     <p class="team-affil-note">
       <sup class="team-sup">1</sup>UC Berkeley &nbsp;
@@ -1130,7 +1145,33 @@
           <div class="team-photo-placeholder">J</div>
         </div>
         <div class="team-name"><a href="https://jonasfrey96.github.io" target="_blank" rel="noopener">Jonas Frey<sup class="team-sup">1,2</sup></a></div>
-        <div class="team-role">Project Lead<br/>UC Berkeley & Stanford</div>
+        <div class="team-role">Project Lead</div>
+      </div>
+    </div>
+
+    <div class="team-pi-row">
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">S</div>
+        </div>
+        <div class="team-name"><a href="" target="_blank" rel="noopener">Shankar Sastry<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">PI</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">M</div>
+        </div>
+        <div class="team-name"><a href="" target="_blank" rel="noopener">Marco Pavone<sup class="team-sup">2</sup></a></div>
+        <div class="team-role">PI</div>
+      </div>
+
+      <div class="team-member">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">C</div>
+        </div>
+        <div class="team-name"><a href="" target="_blank" rel="noopener">Claire Tomlin<sup class="team-sup">1</sup></a></div>
+        <div class="team-role">PI</div>
       </div>
     </div>
   </section>
@@ -1142,20 +1183,20 @@
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
-        What hardware does GoldenGait run on?
-        <span class="qa-toggle">+</span>
+        Can GoldenGait operate fully autonomously, without a human in the loop?
+        <span class="qa-toggle">&#8249;</span>
       </div>
       <div class="qa-answer">
-        GoldenGait runs on a quadruped robot platform equipped with an onboard GPU compute unit,
-        stereo RGB-D cameras, and a LiDAR sensor. The locomotion policy runs at 50 Hz on the
-        onboard computer, while the VLM planner operates asynchronously on a coprocessor.
+        Yes — once given an initial task in natural language, GoldenGait operates fully
+        autonomously. It handles exploration, object localization, and navigation
+        end-to-end.
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         How does the system handle novel objects it has never seen before?
-        <span class="qa-toggle">+</span>
+        <span class="qa-toggle">&#8249;</span>
       </div>
       <div class="qa-answer">
         The VLM backbone provides strong zero-shot generalization. By leveraging a large pre-trained
@@ -1167,49 +1208,47 @@
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         How long does the robot take to complete a typical fetch task?
-        <span class="qa-toggle">+</span>
+        <span class="qa-toggle">&#8249;</span>
       </div>
       <div class="qa-answer">
         Task completion time varies with environment size and object location. In our DARPA
-        challenge runs, average task completion time was under 3 minutes for single-room
-        retrieval and under 7 minutes for multi-room search-and-fetch scenarios.
+        challenge runs, average task completion time was around 5 minutes.
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         Is the code open source?
-        <span class="qa-toggle">+</span>
+        <span class="qa-toggle">&#8249;</span>
       </div>
       <div class="qa-answer">
-        Yes! We are releasing the full codebase, pre-trained model weights, and simulation
-        environments on GitHub. Please see the GitHub link at the top of this page. We hope
-        this accelerates research in embodied AI and legged robotics.
+        Yes! We are releasing the full codebase and a simulation interface on GitHub. 
+        Please see the GitHub link at the top of this page. We hope this accelerates 
+        research in embodied AI and legged robotics.
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
-        What is the sim-to-real gap like for the locomotion controller?
-        <span class="qa-toggle">+</span>
+        How does the agent communicate with the environment?
+        <span class="qa-toggle">&#8249;</span>
       </div>
       <div class="qa-answer">
-        We use domain randomization extensively during training — varying terrain friction,
-        motor dynamics, payload, and sensor noise. The trained policy transfers directly to
-        the physical robot with no fine-tuning required. We observed less than 8% performance
-        degradation from simulation to real-world benchmarks.
+        Our agent communicates with the simulation through ROS topics, including 
+        sensor data streams (RGB-D, proprioception, TF) and command topics for high-level 
+        actions and low-level joint control. 
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
-        Can GoldenGait operate fully autonomously, without a human in the loop?
-        <span class="qa-toggle">+</span>
+        What are some limitations of GoldenGait?
+        <span class="qa-toggle">&#8249;</span>
       </div>
       <div class="qa-answer">
-        Yes — once given an initial task in natural language, GoldenGait operates fully
-        autonomously. It handles exploration, object localization, navigation, and manipulation
-        end-to-end. A human operator is only required for the initial task specification.
+        On a low level, we assume perfect state estimation and rely on a simulation physics during training. Real-world
+        deployment will require additional robustness measures for perception noise and other sim-to-real gaps. 
+        On a high level, the agent can struggle with highly ambiguous instructions.
       </div>
     </div>
 
